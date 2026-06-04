@@ -10,3 +10,9 @@ __pycache__/
 input.txt
 env/
 venv/
+out*/
+wandb/
+wandb_plot.png
+data/openwebtext/hf_source/
+data/openwebtext/download_manifest.json
+data/openwebtext/local_parquet_files.json

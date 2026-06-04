@@ -244,7 +244,7 @@ def get_lr(it):
 # logging
 if wandb_log and master_process:
     import wandb
-    wandb.init(project=wandb_project, name=wandb_run_name, config=config)
+    wandb.init(project=wandb_project, name=wandb_run_name, config=config, mode="offline")
 
 # training loop
 X, Y = get_batch('train') # fetch the very first batch
