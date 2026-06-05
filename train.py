@@ -20,6 +20,7 @@ import os
 import time
 import math
 import pickle
+import uuid
 from contextlib import nullcontext
 
 import numpy as np
@@ -245,15 +246,30 @@ def get_lr(it):
 # logging
 if wandb_log and master_process:
     import wandb
-    from wandb_utils import init_wandb
-    init_wandb(
-        wandb,
+
+    if wandb_mode not in ("online", "offline"):
+        raise ValueError(f"wandb_mode must be 'online' or 'offline', got {wandb_mode!r}")
+
+    wandb_run_id_path = os.path.join(out_dir, "wandb_run_id.txt")
+    if os.path.exists(wandb_run_id_path):
+        with open(wandb_run_id_path, "r", encoding="utf-8") as f:
+            wandb_run_id = f.read().strip()
+    else:
+        wandb_run_id = uuid.uuid4().hex
+        with open(wandb_run_id_path, "w", encoding="utf-8") as f:
+            f.write(wandb_run_id + "\n")
+
+    wandb_init_kwargs = dict(
         project=wandb_project,
         name=wandb_run_name,
         config=config,
         mode=wandb_mode,
-        out_dir=out_dir,
+        dir=out_dir,
+        id=wandb_run_id,
     )
+    if wandb_mode == "online":
+        wandb_init_kwargs["resume"] = "allow"
+    wandb.init(**wandb_init_kwargs)
 
 # training loop
 X, Y = get_batch('train') # fetch the very first batch

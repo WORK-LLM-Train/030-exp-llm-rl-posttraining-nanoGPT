@@ -7,10 +7,8 @@ out_dir = 'out-gpt2-owt-4060'
 eval_interval = 10
 eval_iters = 200
 log_interval = 1
-always_save_checkpoint = True
 
 wandb_log = True
-wandb_project = 'owt'
 wandb_run_name = 'gpt2-124M-4060'
 
 dataset = 'openwebtext'
