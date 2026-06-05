@@ -4,9 +4,9 @@
 # $ python train.py config/train_gpt2_4060.py
 
 out_dir = 'out-gpt2-owt-4060'
-eval_interval = 1000
+eval_interval = 10
 eval_iters = 200
-log_interval = 10
+log_interval = 1
 always_save_checkpoint = True
 
 wandb_log = True
@@ -21,14 +21,13 @@ n_head = 12
 n_embd = 768
 block_size = 1024
 dropout = 0.0
-bias = True
+bias = False
 
 # 4060 8GB VRAM config
 # bs=4 * block_size=1024 * grad_accum=40 = 163,840 tokens/iter
 # Original 8xA100: bs=12 * 1024 * 40 = 491,520 tokens/iter
-# We use 1/3 of original tokens per iter, but same total iters
 batch_size = 4
-gradient_accumulation_steps = 40
+gradient_accumulation_steps = 1*40
 
 # Training schedule
 # 600K iters * 163,840 tokens = ~98B tokens (vs original 300B)
